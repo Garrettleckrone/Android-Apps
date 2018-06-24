@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Lab5.5 Paint Scene</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="paint_square">Painting Piece</string>
+</resources>

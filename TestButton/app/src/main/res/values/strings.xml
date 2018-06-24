@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestButton</string>
+    <string name="Increment">TAP</string>
+    <string name="CounterText">0</string>
+</resources>

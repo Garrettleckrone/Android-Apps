@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Fibonacci Flower</string>
+
+    <!--Button Labels-->
+    <string name="pink_btn">Add Pink</string>
+    <string name="gold_btnn">Add Gold</string>
+    <string name="clear_btn">CLEAR</string>
+
+</resources>

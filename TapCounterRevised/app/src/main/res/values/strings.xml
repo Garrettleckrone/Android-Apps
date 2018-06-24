@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Lab3: Tap Counter Revised</string>
+    <string name="IncButton">Increment</string>
+    <string name="DecButton">Decrement</string>
+    <string name="ResetButton">Reset</string>
+    <string name="CounterText">0</string>
+</resources>

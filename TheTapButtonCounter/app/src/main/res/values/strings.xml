@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Lab 3: The Tap Button Counter</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="increment_tap_btn">Increment</string>
+    <string name="decrement_tap_btn">Decrement</string>
+    <string name="reset_tap_btn">Reset</string>
+    <string name="zero">0</string>
+</resources>

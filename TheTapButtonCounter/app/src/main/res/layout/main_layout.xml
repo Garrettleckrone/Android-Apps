@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/zero"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_marginTop="71dp"
+        tools:text="@string/zero"
+        android:layout_width="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="@string/increment_tap_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:layout_marginRight="55dp"
+        android:layout_marginEnd="55dp"
+        tools:text="@string/increment_tap_btn"
+        android:onClick="addTap"
+        android:layout_marginBottom="58dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/button2"
+        android:layout_toStartOf="@+id/button2"
+        tools:onClick="addTap" />
+
+    <Button
+        android:text="@string/decrement_tap_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        tools:text="@string/decrement_tap_btn"
+        android:layout_alignBaseline="@+id/button"
+        android:layout_alignBottom="@+id/button"
+        android:layout_centerHorizontal="true"
+        tools:onClick="decTap"
+        android:onClick="decTap " />
+
+    <Button
+        android:text="@string/reset_tap_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="53dp"
+        android:layout_marginStart="53dp"
+        android:id="@+id/button3"
+        tools:text="@string/reset_tap_btn"
+        android:layout_alignBaseline="@+id/button2"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_toRightOf="@+id/button2"
+        android:layout_toEndOf="@+id/button2"
+        tools:onClick="resetCount"
+        android:onClick="resetCount (textView) " />
+</RelativeLayout>

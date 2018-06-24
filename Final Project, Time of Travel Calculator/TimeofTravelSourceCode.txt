@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.trey.timeoftravelcalculator">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Holo.NoActionBar">
+        <activity android:name=".MyActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+package com.example.trey.timeoftravelcalculator;
+
+/**
+ * Created by Garrett and Trey on 4/27/2017.
+ */
+
+public class Mileage {
+
+//Declare Variables Required
+    private double distance;
+    private double speedLimit;
+    private double speedingMPH;
+    private double totalTimeWithoutSpeeding;
+    private double totalTimeWithSpeeding;
+    private char environment;
+    private double totalTimeOfStops;
+
+    //Declare constants
+    private final Integer CONVERTHOURSTOMINUTES = 60;
+    private final Integer NOVALUE = 0;
+
+    public Mileage(){
+        //Instantiate
+        distance = 0;
+        speedLimit = 0;
+        speedingMPH = 0;
+    };
+
+    //Basic Setters for Fields
+    public void setDistance(double distance){
+        this.distance = distance;
+    }
+    public void setSpeedLimit(int speedLimit){
+        this.speedLimit = speedLimit;
+    }
+    public void setSpeedingMPH(int speedingMPH){
+        this.speedingMPH = speedingMPH;
+    }
+
+    //Basic Getters for Fields
+    public double getDistance(){return distance;}
+    public double getSpeedingMPH(){return speedingMPH;}
+    public double getTotalTimeOfStops(){return totalTimeOfStops;}
+
+    //GETTERS FOR TOTAL TIMES WITH AND WITHOUT SPEEDING.
+    public double getTotalTimeWithoutSpeeding(){return totalTimeWithoutSpeeding;}
+    public double getTotalTimeWithSpeeding(){return totalTimeWithSpeeding;}
+
+    //SETTER FOR THE ENVIRONMENT TYPE
+    public void setEnvironment(char c){environment = c;}
+
+    //COMPUTES THE TOTAL TIME OF THE TRIP DEPENDING ON THE SELECTED LEVEL OF SPEEDING
+    //INPUT: THE TYPE OF ENVIRONMENT IS SELECTED USING THE RADIO BUTTONS
+    //RETURNS: THE CALCULCATED DOUBLE VALUE
+    //NOTE: VELOCITY IS TAKEN TO BE CONSTANT.
+    public double setTotalTimeWithSpeeding(){
+        switch (environment){
+            case 'C':
+                //CITY
+                //ALGORITHM:
+                //IN A CITY, THE USER CAN EXPECT TO STOP ONCE EVERY 1 MILE AND TO STOP FOR 2 MINUTES.
+                //THIS WILL CALCULATE THE TOTAL TIME WITH SPEEDING AND RETURN A DOUBLE VALUE.
+            totalTimeWithSpeeding = ((distance  * CONVERTHOURSTOMINUTES / (speedingMPH + speedLimit))) ;
+                totalTimeOfStops = (distance/(1) * 2);
+                return totalTimeWithSpeeding;
+            case 'R':
+                //RURAL
+                //ALGORITHM:
+                //IN A RURAL ENVIRONMENT, THE USER CAN EXPECT TO STOP ONCE EVERY 5 TO 10 MILES AND TO STOP FOR 1 MINUTE.
+                //THIS ALGORITHM WILL ASSUME THE DISTANCE BETWEEN TRAFFIC LIGHTS IN A RURAL AREA TO BE 5 MILES.
+                //THIS WILL CALCULATE THE TOTAL TIME WITH SPEEDING AND RETURN A DOUBLE VALUE
+                totalTimeWithSpeeding = (((distance * CONVERTHOURSTOMINUTES  / (speedingMPH + speedLimit))));
+                totalTimeOfStops = (distance/(5) * 1);
+                return totalTimeWithSpeeding;
+            case 'S':
+                //SUBURBAN
+                //ALGORITHM:
+                //IN A SUBURBAN ENVIRONMENT, THE USER CAN EXPECT TO STOP ONCE EVERY 2 MILES AND TO STOP FOR 60 TO 90 SECONDS.
+                //THIS ALGORITHM WILL US A DURATION OF 90 SECONDS.
+                //THIS WILL CALCULATE THE TOTAL TIME WITH SPEEDING AND RETURN A DOUBLE VALUE.
+                totalTimeWithSpeeding = ((distance * CONVERTHOURSTOMINUTES / (speedingMPH + speedLimit)));
+                totalTimeOfStops = (distance/(2) * 1.5);
+                return totalTimeWithSpeeding;
+            case 'H':
+                //HIGHWAY
+                //ALGORITHM:
+                //ON A HIGHWAY, THE USER CAN EXPECT THAT THERE WILL BE NO STOPS.
+                //THIS WILL CALCULATE THE TOTAL TIME WITH SPEEDING AND RETURN A DOUBLE VALUE.
+                totalTimeWithSpeeding = ((distance * CONVERTHOURSTOMINUTES  / (speedingMPH + speedLimit)));
+                totalTimeOfStops = 0;
+                return totalTimeWithSpeeding;
+        }
+        return 1;
+
+        //
+        //CITATION FOR SOME OF THE TRAFFIC STATISTICS
+        //http://nacto.org/publication/urban-street-design-guide/intersection-design-elements/traffic-signals/signal-cycle-lengths/
+        //http://www.heraldextra.com/news/local/red-yellow-green-the-science-behind-traffic-lights/article_d488e07e-abbf-545e-b23e-8c22c223e6fd.html
+        //http://epg.modot.mo.gov/index.php?title=940.6_Traffic_Signal_Spacing
+        //
+    }
+
+
+    //COMPUTES THE TOTAL TIME OF THE TRIP TRAVELING AT THE SPEED LIMIT
+    //INPUT: THE TYPE OF ENVIRONMENT SELECTED USING THE RADIO BUTTONS
+    //RETURNS: THE CALCULCATED DOUBLE VALUE
+    public double setTotalTimeWithoutSpeeding(){
+       switch(environment){
+        case 'C':
+            //CITY
+            //ALGORITHM:
+            //IN A CITY, THE USER CAN EXPECT TO STOP ONCE EVERY HALF OF A MILE AND TO STOP FOR 2 MINUTES.
+            //THIS WILL CALCULATE THE TOTAL TIME WITHOUT SPEEDING AND RETURN A DOUBLE VALUE.
+            totalTimeWithoutSpeeding = ((distance  * CONVERTHOURSTOMINUTES / (speedLimit)));
+            return totalTimeWithoutSpeeding;
+        case 'R':
+            //RURAL
+            //ALGORITHM:
+            //IN A RURAL ENVIRONMENT, THE USER CAN EXPECT TO STOP ONCE EVERY 5 TO 10 MILES AND TO STOP FOR 1 MINUTE.
+            //THIS WILL CALCULATE THE TOTAL TIME WITHOUT SPEEDING AND RETURN A DOUBLE VALUE
+            totalTimeWithoutSpeeding = ((distance  * CONVERTHOURSTOMINUTES / (speedLimit)));
+            return totalTimeWithoutSpeeding;
+        case 'S':
+            //SUBURBAN
+            //ALGORITHM:
+            //IN A SUBURBAN ENVIRONMENT, THE USER CAN EXPECT TO STOP ONCE EVERY 2 MILES AND TO STOP FOR 60 TO 90 SECONDS.
+            //THIS ALGORITHM WILL US A DURATION OF 90 SECONDS.
+            //THIS WILL CALCULATE THE TOTAL TIME WITHOUT SPEEDING AND RETURN A DOUBLE VALUE.
+            totalTimeWithoutSpeeding = ((distance  * CONVERTHOURSTOMINUTES / (speedLimit)));
+            return totalTimeWithoutSpeeding;
+        case 'H':
+            //HIGHWAY
+            //ALGORITHM:
+            //ON A HIGHWAY, THE USER CAN EXPECT THAT THERE WILL BE NO STOPS.
+            //THIS WILL CALCULATE THE TOTAL TIME WITHOUT SPEEDING AND RETURN A DOUBLE VALUE.
+            totalTimeWithoutSpeeding = ((distance  * CONVERTHOURSTOMINUTES / (speedLimit)));
+             return totalTimeWithoutSpeeding;
+         default:
+            return 0;
+        }
+    }
+
+    //METHOD TO REFRESH AND CLEAR THE OLD VALUES STORED IN THE PRIVATE FIELDS
+    public void refesh(){
+        distance = NOVALUE;
+        speedLimit = NOVALUE;
+        totalTimeWithoutSpeeding = NOVALUE;
+        totalTimeWithSpeeding = NOVALUE;
+
+    }
+
+}
+
+
+package com.example.trey.timeoftravelcalculator;
+/**
+ * Created by Garrett and Trey on 4/26/2017.
+ */
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+public class MyActivity extends Activity {
+
+    //DECLARE UI OBJECTS TO BE REFERENCED
+    private RadioGroup environmentRG;
+    private EditText distanceToTravelETB;
+    private TextView speedChangeTextView;
+    private TextView speedLimitTextView;
+    private TextView totalTimeSavedMessage;
+    private Button computeButton;
+    private Button speedIncrementButton;
+    private Button speedDecrementButton;
+    private Integer level = 0;
+    private double totalTimeWithoutSpeeding;
+    private double totalTimeWithSpeeding;
+    private String timeSaved;
+    private final int NUMBEROFWHEELTURNS = 50;
+
+    //DECLARE VARIABLE FOR MILEAGE
+    private Mileage mileage;
+
+
+    //DECLARE FIELDS FOR THE WHEELS
+    private ImageView wheel1Img;
+    private ImageView wheel2Img;
+
+    private Wheel wheel1;
+    private Wheel wheel2;
+
+    //ONCREATE METHOD
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my);
+
+        //CREATE A NEW MILEAGE OBJECT
+        mileage = new Mileage();
+
+        //DECLARE EACH WHEEL IMAGE
+        wheel1Img = (ImageView) findViewById(R.id.imageView2);
+        wheel2Img = (ImageView) findViewById(R.id.imageView3);
+
+        //INITIALIZE
+        initialize();
+    }
+    private void initialize() {
+        //GET REFERENCE TO EACH OF THE UI COMPONENTS
+        environmentRG = (RadioGroup) findViewById(R.id.radioGroup1);
+        distanceToTravelETB = (EditText) findViewById(R.id.editTextDistance);
+        speedLimitTextView = (EditText) findViewById(R.id.editTextSpeedLimit);
+        speedChangeTextView = (TextView) findViewById(R.id.textView3);
+        computeButton = (Button) findViewById(R.id.button);
+        speedIncrementButton = (Button) findViewById(R.id.button1);
+        speedDecrementButton = (Button) findViewById(R.id.button2);
+        totalTimeSavedMessage = (TextView) findViewById(R.id.textView6);
+
+        //INITIALIZE WHEELS
+        //WHEELS WILL TURN 4 TIMES
+        //Wheel 1
+        wheel1 = new Wheel();
+        wheel1.setmStartDegree(0);
+        wheel1.setmEndDegree(360 * NUMBEROFWHEELTURNS);
+        //Wheel 1
+        wheel2 = new Wheel();
+        wheel2.setmStartDegree(0);
+        wheel2.setmEndDegree(360 * NUMBEROFWHEELTURNS);
+
+    }
+
+    //NUMBERS FOR STEP UP AND STEP DOWN CAN RANGE FROM 1 THROUGH 14
+    public void stepUp(View view){
+        if (level < 30) {
+            level ++;
+            String speedChangeText = "" + level;
+            mileage.setSpeedingMPH(level);
+            speedChangeTextView.setText(speedChangeText);
+        }
+    }
+    public void stepDown(View view){
+        if (level > -30) {
+            level --;
+            String speedChangeText = "" + level;
+            mileage.setSpeedingMPH(level);
+            speedChangeTextView.setText(speedChangeText);
+        }
+    }
+
+
+
+    //Computer method that will be called when the COMPUTE button is pressed.
+    public void compute(View view){
+
+        //CLEAR THE OLD VALUES SAVED EACH TIME THE COMPUTE BUTTON IS PRESSED
+        mileage.refesh();
+
+        //FIRST GET VALUES FROM EDITTED TEXT FIELDS and INC/DEC TEXT
+        //Try Catch added to filter out non-numeric inputs
+        try {
+            mileage.setDistance(Double.parseDouble((distanceToTravelETB).getText().toString()));
+            mileage.setSpeedLimit(Integer.parseInt((speedLimitTextView).getText().toString()));
+        }
+        catch (NumberFormatException e){
+
+        }
+
+
+        //COMPUTE THE TOTAL TIME WITH SPEEDING AND WITHOUT SPEEDING
+        //THAT CALCULATED VALUE WILL BE STORED AS A FIELD IN THE MILEAGE OBJECT
+        mileage.setTotalTimeWithSpeeding();
+        mileage.setTotalTimeWithoutSpeeding();
+
+        //DISPLAY THE MESSAGE BASED ON WHETHER OR NOT THEY ARE SPEEDING.
+        //IF THEY ARE SPEEDING
+        if(mileage.getSpeedingMPH() > 0){
+            timeSaved = "Trip will take: " + String.format("%.2f",mileage.getTotalTimeOfStops() + mileage.getTotalTimeWithSpeeding()) + " minutes" +
+                    "\nYou saved: " +
+                    //FORMATTING TO 2 DECIMAL PLACES.
+                    String.format( "%.2f", (mileage.getTotalTimeWithoutSpeeding() - mileage.getTotalTimeWithSpeeding()))
+                    + " minutes.";
+            totalTimeSavedMessage.setText(timeSaved);
+        }
+        //IF THEY ARE GOING THE SPEED LIMIT
+        if(mileage.getSpeedingMPH() == 0){
+            timeSaved = "Trip will take: " + String.format("%.2f",mileage.getTotalTimeOfStops()+ mileage.getTotalTimeWithSpeeding()) + " minutes" +
+                    "\nNo time has been saved.";
+            totalTimeSavedMessage.setText(timeSaved);
+        }
+        //IF THEY ARE GOING LESS THAN THE SPEED LIMIT
+        if(mileage.getSpeedingMPH() < 0){
+            timeSaved = "Trip will take: " + String.format("%.2f",mileage.getTotalTimeOfStops()+ mileage.getTotalTimeWithSpeeding()) + " minutes" +
+                    "\nYou lost: " +
+                    //FORMATTING TO 2 DECIMAL PLACES.
+                   String.format( "%.2f",(mileage.getTotalTimeWithoutSpeeding() - mileage.getTotalTimeWithSpeeding()))
+                    + " minutes.";
+
+            totalTimeSavedMessage.setText(timeSaved);
+        }
+
+        //ANIMATE WHEELS
+        final int DELAY = 1000;
+
+        RotateAnimation ra1 = new RotateAnimation(wheel1.getmStartDegree(), wheel1.getmEndDegree(), Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ra1.setDuration(DELAY);
+        ra1.setFillAfter(true);
+        ra1.setInterpolator(new AccelerateInterpolator());
+        wheel1Img.startAnimation(ra1);
+
+        RotateAnimation ra2 = new RotateAnimation(wheel2.getmStartDegree(), wheel2.getmEndDegree(), Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ra2.setDuration(DELAY);
+        ra2.setFillAfter(true);
+        wheel2Img.startAnimation(ra2);
+
+    }
+
+    //RADIO BUTTON EVENT HANDLER
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioButton:
+                if (checked)
+                    //CITY
+                    mileage.setEnvironment('C');
+                    break;
+            case R.id.radioButton2:
+                if (checked)
+                    //RURAL
+                    mileage.setEnvironment('R');
+                    break;
+            case R.id.radioButton3:
+                if (checked)
+                    //HIGHWAY
+                    mileage.setEnvironment('H');
+                    break;
+            case R.id.radioButton4:
+                if (checked)
+                    //SUBURBS
+                    mileage.setEnvironment('S');
+                    break;
+        }
+    }
+
+
+}
+
+package com.example.trey.timeoftravelcalculator;
+
+/**
+ * Created by Garrett and Trey on 4/28/2017.
+*/
+
+public class Wheel {
+    private int mStartDegree;
+    private int mEndDegree;
+
+    public Wheel(){
+        mStartDegree = 0;
+        mEndDegree = 0;
+    }
+    //Setters
+    public void setmStartDegree(int startDegree){mStartDegree = startDegree;}
+    public void setmEndDegree(int endDegree){mEndDegree = endDegree;}
+
+    //Getters
+    public int getmStartDegree(){return mStartDegree;}
+    public int getmEndDegree(){return mEndDegree;}
+
+
+}
+
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MyActivity"
+    android:background="@drawable/woods">
+
+
+    <TextView
+        android:text=" Time of Travel Calculator"
+        android:layout_width="213dp"
+        android:layout_height="26dp"
+        android:id="@+id/textView7"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/background_light"
+        android:layout_x="86dp"
+        android:layout_y="17dp"
+        android:background="@color/forestgreen" />
+
+    <TextView
+        android:text="Speed Limit:"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:id="@+id/textView"
+        android:textSize="18sp"
+        android:layout_alignBottom="@+id/editTextSpeedLimit"
+        android:layout_alignParentStart="true"
+        android:layout_x="19dp"
+        android:layout_y="121dp"
+        android:background="@color/forestgreen"
+        android:textColor="@android:color/background_light" />
+
+    <TextView
+        android:text="Desired Speed Change:"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:id="@+id/textView2"
+        android:textSize="18sp"
+        android:textColor="@android:color/background_light"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp"
+        android:layout_x="19dp"
+        android:layout_y="159dp"
+        android:background="@color/forestgreen" />
+
+    <EditText
+        android:id="@+id/editTextDistance"
+        android:layout_width="153dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="19dp"
+        android:ems="5"
+        android:inputType="number"
+        android:backgroundTint="@android:color/background_light"
+        android:background="@android:drawable/editbox_background"
+        android:elevation="1dp"
+        tools:text="@string/distance_to_travel_textbox"
+        android:textColorHighlight="@android:color/black"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_alignStart="@+id/editTextSpeedLimit"
+        android:textColor="@color/forestgreen"
+        android:layout_x="197dp"
+        android:layout_y="68dp" />
+
+    <TextView
+        android:text="Distance of Travel:"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:id="@+id/textView1"
+        android:textSize="18sp"
+        android:textColor="@android:color/background_light"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentStart="true"
+        android:layout_x="17dp"
+        android:layout_y="75dp"
+        android:background="@color/forestgreen" />
+
+    <EditText
+        android:id="@+id/editTextSpeedLimit"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="19dp"
+        android:ems="5"
+        android:inputType="number"
+        android:background="@android:drawable/editbox_background"
+        android:elevation="9dp"
+        tools:text="@string/speed_limit_textbox"
+        android:clickable="false"
+        android:layout_below="@+id/editTextDistance"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/forestgreen"
+        android:layout_x="216dp"
+        android:layout_y="114dp"
+        android:backgroundTint="@android:color/background_light" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/speed_change_text_view"
+        android:textColor="@android:color/background_light"
+        android:layout_alignBaseline="@+id/button2"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_toStartOf="@+id/button2"
+        android:layout_marginEnd="14dp"
+        android:layout_x="275dp"
+        android:layout_y="171dp" />
+
+    <TextView
+        android:text="Driving Evironment:"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:id="@+id/textView4"
+        android:textSize="18sp"
+        android:textColor="@android:color/background_light"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/button1"
+        android:layout_alignParentStart="true"
+        android:layout_x="21dp"
+        android:layout_y="191dp"
+        android:background="@color/forestgreen" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="71dp"
+        android:layout_alignStart="@+id/textView7"
+        android:layout_toStartOf="@+id/imageView3"
+        android:layout_x="-1dp"
+        android:layout_y="221dp"
+        android:orientation="horizontal"
+        android:id="@+id/radioGroup1">
+
+        <RadioButton
+            android:text="City"
+            android:layout_width="65dp"
+            android:layout_height="31dp"
+            android:id="@+id/radioButton"
+            android:textColor="@android:color/background_light"
+            app:buttonTint="@android:color/black"
+            android:layout_alignBaseline="@+id/radioButton2"
+            android:layout_alignBottom="@+id/radioButton2"
+            android:layout_alignStart="@+id/button1"
+            android:layout_x="6dp"
+            android:layout_y="315dp"
+            android:onClick="onRadioButtonClicked"
+            android:background="@color/forestgreen" />
+
+        <RadioButton
+            android:text="Suburbs"
+            android:layout_width="96dp"
+            android:layout_height="33dp"
+            android:id="@+id/radioButton4"
+            android:textColor="@android:color/background_light"
+            app:buttonTint="@android:color/background_light"
+            android:layout_below="@+id/textView4"
+            android:layout_alignParentStart="true"
+            android:onClick="onRadioButtonClicked"
+            android:background="@color/forestgreen" />
+
+        <RadioButton
+            android:text="Rural"
+            android:layout_width="83dp"
+            android:layout_height="32dp"
+            android:id="@+id/radioButton2"
+            android:textColor="@android:color/background_light"
+            app:buttonTint="@android:color/background_light"
+            android:layout_alignBaseline="@+id/radioButton4"
+            android:layout_alignBottom="@+id/radioButton4"
+            android:layout_toEndOf="@+id/textView"
+            android:onClick="onRadioButtonClicked"
+            android:background="@color/forestgreen" />
+
+        <RadioButton
+            android:text="Highway"
+            android:layout_width="96dp"
+            android:layout_height="35dp"
+            android:id="@+id/radioButton3"
+            android:textColor="@android:color/background_light"
+            app:buttonTint="@android:color/background_light"
+            android:layout_alignBaseline="@+id/radioButton"
+            android:layout_alignBottom="@+id/radioButton"
+            android:layout_alignStart="@+id/button2"
+            android:onClick="onRadioButtonClicked"
+            android:background="@color/forestgreen" />
+    </RadioGroup>
+
+    <Button
+        android:text="Compute"
+        android:layout_width="127dp"
+        android:layout_height="44dp"
+        android:id="@+id/button"
+        android:background="@android:color/background_light"
+        android:adjustViewBounds="true"
+        android:onClick="compute"
+        android:layout_below="@+id/radioButton"
+        android:layout_toStartOf="@+id/textView6"
+        android:textColor="@color/forestgreen"
+        android:layout_x="132dp"
+        android:layout_y="272dp" />
+
+    <TextView
+        android:layout_width="181dp"
+        android:layout_height="57dp"
+        android:id="@+id/textView6"
+        android:textColor="@android:color/background_light"
+        tools:text="@string/time_saved_textbox"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_toEndOf="@+id/button1"
+        android:layout_x="168dp"
+        android:layout_y="481dp"
+        android:background="@color/forestgreen" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/car"
+        android:id="@+id/imageView"
+        android:src="@drawable/car"
+        android:layout_alignEnd="@+id/radioButton3"
+        android:layout_below="@+id/textView5"
+        android:layout_x="23dp"
+        android:layout_y="184dp" />
+
+    <ImageView
+        android:layout_width="66dp"
+        android:layout_height="78dp"
+        app:srcCompat="@drawable/wheels"
+        android:id="@+id/imageView2"
+        android:src="@drawable/wheels"
+        android:layout_weight="1"
+        android:layout_toStartOf="@+id/radioButton"
+        android:layout_x="269dp"
+        android:layout_y="404dp" />
+
+    <ImageView
+        android:layout_width="67dp"
+        android:layout_height="121dp"
+        app:srcCompat="@drawable/wheels"
+        android:id="@+id/imageView3"
+        android:src="@drawable/wheels"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="95dp"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_y="379dp"
+        android:layout_x="79dp" />
+
+    <TextView
+        android:text="Time Saved: "
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:id="@+id/textView5"
+        android:textSize="18sp"
+        android:textColor="@android:color/background_light"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/button"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_x="49dp"
+        android:layout_y="491dp"
+        android:background="@color/forestgreen" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="29dp"
+        android:layout_height="26dp"
+        android:text="@string/down_btn"
+        android:gravity="center"
+        android:layout_alignEnd="@+id/editTextSpeedLimit"
+        android:layout_alignBottom="@+id/button1"
+        android:onClick="stepDown"
+        android:layout_x="236dp"
+        android:layout_y="167dp"
+        android:textColor="@color/forestgreen"
+        android:background="@android:color/background_light" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="29dp"
+        android:layout_height="27dp"
+        android:onClick="stepUp"
+        android:text="@string/up_btn"
+        android:gravity="center"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignStart="@+id/editTextSpeedLimit"
+        android:layout_x="292dp"
+        android:layout_y="167dp"
+        android:backgroundTint="@android:color/background_light"
+        android:textColor="@color/forestgreen"
+        android:background="@android:color/background_light" />
+
+</AbsoluteLayout>
+
+<resources>
+    <string name="app_name">Time of Travel Calculator</string>
+    <string name="up_btn">+</string>
+    <string name="down_btn">-</string>
+    <string name="start_level">1</string>
+
+    <!-- Strings for Application-->
+    <string name="time_saved_textbox"> The Total Time and Time Saved</string>
+    <string name="distance_to_travel_textbox">Distance (Miles)</string>
+    <string name="speed_change_text_view">0</string>
+    <string name="speed_limit_textbox">Limit (MPH)</string>
+
+</resources>
